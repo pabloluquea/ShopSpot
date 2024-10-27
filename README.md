@@ -16,40 +16,62 @@ A Streamlit application that helps users locate items in a supermarket and find 
 1. Clone this repository:
 ```bash
 git clone https://github.com/pabloluquea/ShopSpot.git
+cd ShopSpot
 ```
 
-2. Install dependencies using Make:
+2. Install dependencies:
+
+For Windows:
+```powershell
+pip install -r requirements.txt
+```
+
+For Unix/MacOS:
 ```bash
+# Using Make
 make install
-```
 
-Alternatively, you can install dependencies directly using pip:
-```bash
+# Or using pip directly
 pip install -r requirements.txt
 ```
 
 ## Running the Application
 
-1. Using Make:
-```bash
-make run
+For Windows:
+```powershell
+streamlit run main.py
 ```
 
-2. Or directly using Streamlit:
+For Unix/MacOS:
 ```bash
+# Using Make
+make run
+
+# Or using Streamlit directly
 streamlit run main.py
 ```
 
 The application will start and automatically open in your default web browser. If it doesn't, you can access it at `http://localhost:8501`.
 
 ## Project Structure
-- `main.py`: The main Streamlit application code.
-- `requirements.txt`: List of dependencies for the project.
-- `Makefile`: Convenience commands for installation and running the application.
+```
+ShopSpot/
+├── main.py              # Main application file
+├── requirements.txt     # Python dependencies
+├── Makefile            # Make commands for Unix/MacOS
+└── README.md           # Project documentation
+```
 
 ## Development
 
-To clean up Python cache files:
+For Windows:
+```powershell
+# Clean Python cache files
+Get-ChildItem -Path . -Include "__pycache__" -Recurse -Directory | Remove-Item -Recurse -Force
+Get-ChildItem -Path . -Include "*.pyc" -Recurse -File | Remove-Item -Force
+```
+
+For Unix/MacOS:
 ```bash
 make clean
 ```
