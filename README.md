@@ -15,7 +15,7 @@ A Streamlit application that helps users locate items in a supermarket and find 
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/supermarket-item-finder.git
+git clone https://github.com/pabloluquea/ShopSpot.git
 ```
 
 2. Install dependencies using Make:
