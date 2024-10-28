@@ -11,6 +11,7 @@ supermarket_items = {
     "apples": {"aisle": 1, "section": "Produce"},
     "pasta": {"aisle": 5, "section": "Dry Goods"},
     "chicken": {"aisle": 4, "section": "Meat"},
+    "beer": {"aisle": 6, "section": "Beer"},
     # Add more items as needed
 }
 
@@ -60,3 +61,4 @@ This app helps you locate items in the supermarket.
 2. Search for the item you're looking for
 3. Get the exact aisle and section!
 """)
+
