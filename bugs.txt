@@ -1,0 +1,10 @@
+NameError: name 'selected_store_name' is not defined
+Traceback:
+File "C:\Users\pluqu\Documents\GitHub\ShopSpot\venv\Lib\site-packages\streamlit\runtime\scriptrunner\exec_code.py", line 88, in exec_func_with_error_handling
+    result = func()
+File "C:\Users\pluqu\Documents\GitHub\ShopSpot\venv\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 579, in code_to_exec
+    exec(code, module.__dict__)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^
+File "C:\Users\pluqu\Documents\GitHub\ShopSpot\main.py", line 70, in <module>
+    if selected_store_name in supermarket_items:
+       ^^^^^^^^^^^^^^^^^^^
