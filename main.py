@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
+import geocoder
+
 
 # Sample database of supermarket items and their aisles
 # In a real app, this would come from a proper database
@@ -18,28 +20,38 @@ supermarket_items = {
 # Sample supermarket locations
 # In a real app, this would come from a store locations API
 supermarkets = {
-    "SuperMart Downtown": {"lat": 40.7128, "lon": -74.0060},
-    "SuperMart Uptown": {"lat": 40.7589, "lon": -73.9851},
+    "Aldi": {"lat": 40.7128, "lon": -74.0060},
+    "Mercadona": {"lat": 40.7589, "lon": -73.9851},
 }
 
-st.title("🛒 Supermarket Item Finder")
+st.title("🛒 ShopSpot")
 
-# Get user's location
-if st.button("📍 Use My Location"):
-    # In a real app, you would use browser geolocation
-    # For demo, we'll use a fixed location
+# Get user's location automatically on app load
+try:
+    g = geocoder.ip('me')
+    if g.ok:
+        user_lat = g.lat
+        user_lon = g.lng
+        st.write(f"📍 Your location: {user_lat:.4f}, {user_lon:.4f}")
+        
+        # Find nearest supermarket
+        nearest_store = min(
+            supermarkets.items(),
+            key=lambda x: geodesic(
+                (user_lat, user_lon),
+                (x[1]["lat"], x[1]["lon"])
+            ).miles
+        )
+        st.success(f"Nearest store: {nearest_store[0]}")
+    else:
+        raise Exception("Could not get location")
+        
+except Exception as e:
+    st.error(f"Error getting location: {str(e)}")
+    # Fallback to default NYC coordinates
     user_lat = 40.7128
     user_lon = -74.0060
-    
-    # Find nearest supermarket
-    nearest_store = min(
-        supermarkets.items(),
-        key=lambda x: geodesic(
-            (user_lat, user_lon),
-            (x[1]["lat"], x[1]["lon"])
-        ).miles
-    )
-    st.success(f"Nearest store: {nearest_store[0]}")
+    st.info("Using default location (New York City)")
 
 # Search for item
 search_item = st.text_input("🔍 What are you looking for?").lower()
@@ -61,4 +73,3 @@ This app helps you locate items in the supermarket.
 2. Search for the item you're looking for
 3. Get the exact aisle and section!
 """)
-

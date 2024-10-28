@@ -1,4 +1,6 @@
-.PHONY: install run clean
+.PHONY: install run clean all
+
+all: install run clean
 
 install:
 	pip install -r requirements.txt

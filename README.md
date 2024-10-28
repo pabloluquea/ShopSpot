@@ -11,7 +11,7 @@ A Streamlit application that helps users locate items in a supermarket and find 
 - Python 3.8 or higher
 - pip (Python package installer)
 
-## Installation
+## Installation (only do this once)
 
 1. Clone this repository:
 ```bash
@@ -23,15 +23,18 @@ cd ShopSpot
 
 For Windows:
 ```powershell
+.\venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
 For Unix/MacOS:
 ```bash
 # Using Make
+source venv/bin/activate
 make install
 
 # Or using pip directly
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -58,8 +61,8 @@ The application will start and automatically open in your default web browser. I
 ShopSpot/
 ├── main.py              # Main application file
 ├── requirements.txt     # Python dependencies
-├── Makefile            # Make commands for Unix/MacOS
-└── README.md           # Project documentation
+├── Makefile             # Make commands for Unix/MacOS
+└── README.md            # Project documentation
 ```
 
 ## Development
