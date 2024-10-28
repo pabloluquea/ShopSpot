@@ -3,26 +3,11 @@ import pandas as pd
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 import geocoder
+from pprint import pprint  # Import the function, not the module
 
+from data.stores import supermarkets
+from data.inventory import supermarket_items
 
-# Sample database of supermarket items and their aisles
-# In a real app, this would come from a proper database
-supermarket_items = {
-    "milk": {"aisle": 2, "section": "Dairy"},
-    "bread": {"aisle": 3, "section": "Bakery"},
-    "apples": {"aisle": 1, "section": "Produce"},
-    "pasta": {"aisle": 5, "section": "Dry Goods"},
-    "chicken": {"aisle": 4, "section": "Meat"},
-    "beer": {"aisle": 6, "section": "Beer"},
-    # Add more items as needed
-}
-
-# Sample supermarket locations
-# In a real app, this would come from a store locations API
-supermarkets = {
-    "Aldi": {"lat": 40.7128, "lon": -74.0060},
-    "Mercadona": {"lat": 40.7589, "lon": -73.9851},
-}
 
 st.title("🛒 ShopSpot")
 
@@ -34,15 +19,40 @@ try:
         user_lon = g.lng
         st.write(f"📍 Your location: {user_lat:.4f}, {user_lon:.4f}")
         
-        # Find nearest supermarket
-        nearest_store = min(
-            supermarkets.items(),
-            key=lambda x: geodesic(
-                (user_lat, user_lon),
-                (x[1]["lat"], x[1]["lon"])
-            ).miles
+        # Calculate distances for all stores
+        stores_with_distances = [
+            (
+                store_name,
+                store_data,
+                geodesic(
+                    (user_lat, user_lon),
+                    (store_data["lat"], store_data["lon"])
+                ).miles
+            )
+            for store_name, store_data in supermarkets.items()
+        ]
+        print(f"Stores with distances: {stores_with_distances}")
+
+        
+        # Sort by distance and get top 5
+        closest_stores = sorted(stores_with_distances, key=lambda x: x[2])[:5]
+        
+        # Create radio buttons for store selection
+        store_options = {
+            f"{store[0]} ({store[2]:.2f} miles away)": store[0] 
+            for store in closest_stores
+        }
+        
+        selected_store = st.radio(
+            "📍 Select your store:",
+            options=store_options.keys(),
+            index=0  # Default to closest store
         )
-        st.success(f"Nearest store: {nearest_store[0]}")
+        
+        # Get the actual store name from the selection
+        selected_store_name = store_options[selected_store]
+        st.success(f"You selected: {selected_store_name}")
+        
     else:
         raise Exception("Could not get location")
         
@@ -57,13 +67,17 @@ except Exception as e:
 search_item = st.text_input("🔍 What are you looking for?").lower()
 
 if search_item:
-    if search_item in supermarket_items:
-        item_info = supermarket_items[search_item]
-        st.info(f"You can find {search_item} in:")
-        st.write(f"🚶 Aisle: {item_info['aisle']}")
-        st.write(f"📍 Section: {item_info['section']}")
+    if selected_store_name in supermarket_items:
+        store_inventory = supermarket_items[selected_store_name]
+        if search_item in store_inventory:
+            item_info = store_inventory[search_item]
+            st.info(f"You can find {search_item} in {selected_store_name}:")
+            st.write(f"🚶 Aisle: {item_info['aisle']}")
+            st.write(f"📍 Section: {item_info['section']}")
+        else:
+            st.warning(f"Sorry, we couldn't find {search_item} in {selected_store_name}.")
     else:
-        st.warning("Sorry, we couldn't find that item in our database.")
+        st.error("Please select a store first!")
 
 # Add some helpful information
 st.sidebar.header("About")
@@ -73,3 +87,8 @@ This app helps you locate items in the supermarket.
 2. Search for the item you're looking for
 3. Get the exact aisle and section!
 """)
+
+# Debug logs
+print(f"Selected store: {selected_store_name}")
+print("Available items in", selected_store_name)
+pprint(supermarket_items.get(selected_store_name, {}))
