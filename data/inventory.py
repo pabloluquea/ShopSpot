@@ -14,5 +14,13 @@ supermarket_items = {
         "pasta": {"aisle": 4, "section": "Dry Goods"},
         "chicken": {"aisle": 5, "section": "Meat"},
         "beer": {"aisle": 7, "section": "Beverages"},
+    },
+        "Mercadona Cabanyal": {
+        "milk": {"aisle": 3, "section": "Dairy"},
+        "bread": {"aisle": 1, "section": "Bakery"},
+        "apples": {"aisle": 2, "section": "Produce"},
+        "pasta": {"aisle": 4, "section": "Dry Goods"},
+        "chicken": {"aisle": 5, "section": "Meat"},
+        "beer": {"aisle": 7, "section": "Beverages"},
     }
 }
