@@ -17,7 +17,7 @@ try:
     if g.ok:
         user_lat = g.lat
         user_lon = g.lng
-        st.write(f"📍 Your lukas: {user_lat:.4f}, {user_lon:.4f}")
+        st.write(f"📍 Your Location: {user_lat:.4f}, {user_lon:.4f}")
         
         # Calculate distances for all stores
         stores_with_distances = [
